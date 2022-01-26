@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Ticket_Booking</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<script>
+	src="https://login2explore.com/jpdb/resources/js/0.0.4/jpdb-commons.js"></script>
+</head>
+<body>
+
+	<div class="container">
+	<h2>Input-Form</h2>
+		<form id="TrForm" method="post">
+			<div class="form-group"> 
+			<span><label for="TrNo">Train No:</label> <label id="TrNo"></label></span>
+			<input type="number" class="form-control" name="TrNo" id="TrNo" placeholder="Enter Train No" required>
+			</div>
+
+			<div class="form-group">
+			<label for="TrName">Train Name:</label>
+			<input type="text" class="form-control" id="TrName" placeholder="Enter Train Name" name="TrName">
+			</div>
+
+			<div class="form-group">
+			<label for="ArTime">Arrival Time:</label>
+			<input type="time" class="form-control" id="ArTime" placeholder="Enter Arrival Time" name="ArTime">
+			</div>
+
+			<div class="form-group">
+			<label for="DeTime">Departure Time:</label>
+			<input type="time" class="form-control" id="DeTime" placeholder="Enter Arrival Time" name="DeTime">
+			</div>
+
+			<input type="button" class="btn btn-primary" id="TrSave" value="Save" onclick="save();">
+		</form>
+	</div>
+
+
+	<script>
+		
+		$("#TrNo").focus();
+		function validateAndGet(){
+			
+            var no_var=$("#TrNo").val();
+			if(no_var===""){
+				alert("Train No Required");
+				$("#TrNo").focus();
+				return "";
+			}
+
+			var Tr_var=$("#TrName").val();
+			if(Tr_var===""){
+				alert("Train Name is Required");
+				$("#TrName").focus();
+				return "";
+			}
+                                                                                                                                                                
+			var A_var=$("#ArTime").val();
+			if(A_var===""){
+				alert("ArTime is Required");
+				$("#ArTime").focus();
+				return "";
+			}
+
+		    var D_var=$("#DeTime").val();
+			if(D_var===""){
+				alert("DeTime is Required");
+				$("#DeTime").focus();
+				return "";
+			}
+
+
+			var jsonStrObj = {
+			TrNo: no_var,
+			TrName: Tr_var,
+			ArTime: A_var,
+			DeTime: D_var,
+			};
+			
+			return}
+			JSON.stringify(jsonStrObj);
+
+
+
+
+		 function resetForm() {
+			$("#TrNo").val("")
+			$("#TrName").val("");
+			$("#ArTime").val("");
+			$("#DeTime").focus();
+		}
+
+		function save() {
+			var jsonStr = validateAndGetFormData();
+			if (jsonStr === "") {
+			return;
+			}
+			var putReqStr = createPUTRequest("90938450|-31948827738698785|90947275",
+			jsonStr, "Railway", "tr");
+			alert(putReqStr);
+			jQuery.ajaxSetup({async: false});
+			var resultObj = executeCommand(putReqStr,
+			"http://api.login2explore.com:5577", "/api/iml");
+			alert(JSON.stringify(resultObj));
+			jQuery.ajaxSetup({async: true});
+			resetForm();
+		}
+
+
+	</script>
+
+</body>
+</html>
+
